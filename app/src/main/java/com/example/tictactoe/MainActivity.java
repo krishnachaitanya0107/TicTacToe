@@ -40,62 +40,56 @@ public class MainActivity extends AppCompatActivity {
 
             if (playerNo == 0) {
                 x.setImageResource(R.drawable.stylishx);
+                win.setText(R.string.oTurn);
                 playerNo = 1;
             } else {
                 x.setImageResource(R.drawable.stylisho);
+                win.setText(R.string.xTurn);
                 playerNo = 0;
             }
 
             x.animate().translationYBy(1500).rotation(7200).setDuration(700);
-            for (int[] winningPosition : winningPositions) {
-                if (gameState[winningPosition[0]] == gameState[winningPosition[1]]
-                        && gameState[winningPosition[1]] == gameState[winningPosition[2]]
-                        && gameState[winningPosition[0]] != 2) {
-                    gameWon=true;
-                    if (playerNo == 1) {
-                        winner = "Player X";
-                        xScore=xScore+1;
-                        xTextView.setText(Integer.toString(xScore));
-                    } else {
-                        yScore=yScore+1;
-                        winner = "Player O";
-                        yTextView.setText(Integer.toString(yScore));
-                    }
 
+            checkForWinner();
+        }
+        }
 
-                    play.setVisibility(View.VISIBLE);
-                    win.setVisibility(View.VISIBLE);
-                    win.setText(String.format("%s has won ", winner));
-
-
-                } else if (!gameWon){
-                    int found = 0;
-
-                    for (int n : gameState) {
-                        if (n==2)
-                            found++;
-                    }
-
-                    if(found==0)
-                    {
-                        play.setVisibility(View.VISIBLE);
-                        win.setVisibility(View.VISIBLE);
-                        win.setText(staleMateMessage);
-
-                    }
+    private void checkForWinner() {
+        for (int[] winningPosition : winningPositions) {
+            if (gameState[winningPosition[0]] == gameState[winningPosition[1]]
+                    && gameState[winningPosition[1]] == gameState[winningPosition[2]]
+                    && gameState[winningPosition[0]] != 2) {
+                gameWon=true;
+                if (playerNo == 1) {
+                    winner = "Player X";
+                    xScore=xScore+1;
+                    xTextView.setText(Integer.toString(xScore));
+                } else {
+                    yScore=yScore+1;
+                    winner = "Player O";
+                    yTextView.setText(Integer.toString(yScore));
                 }
 
+                play.setVisibility(View.VISIBLE);
+                win.setText(String.format("%s has won ", winner));
+
+            } else if (!gameWon){
+                int found = 0;
+                for (int n : gameState) {
+                    if (n==2)
+                        found++; }
+                if(found==0)
+                {   play.setVisibility(View.VISIBLE);
+                    win.setText(staleMateMessage);
+                }
             }
         }
+    }
 
-        }
-
-        public void playAgain(View view)
-        {
-            Button play= findViewById(R.id.button2);
-            TextView win= findViewById(R.id.textView);
+    public void playAgain(View view)
+        {   //reset all variables
             play.setVisibility(View.INVISIBLE);
-            win.setVisibility(View.INVISIBLE);
+            win.setText(R.string.xTurn);
             GridLayout grid= findViewById(R.id.gridLayout);
             for(int i=0;i<grid.getChildCount();i++)
             {
@@ -106,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
             playerNo=0;
 
             //0 :player x , 1 : player o and 2 : empty
-
             for (int d=0;d<=8;d++){gameState[d]=2;}
             gameWon=false;
         }
@@ -119,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         staleMateMessage="StaleMate , it was a draw";
         play= findViewById(R.id.button2);
         win= findViewById(R.id.textView);
+        win.setText(R.string.xTurn);
         xTextView=findViewById(R.id.textView3);
         yTextView=findViewById(R.id.textView4);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

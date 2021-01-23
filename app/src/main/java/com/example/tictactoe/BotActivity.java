@@ -24,7 +24,10 @@ public class BotActivity extends AppCompatActivity {
     boolean gameTie=false;
     GridLayout grid;
     int tapPosition;
-    Button play;
+
+    //depth of minimax algorithm change difficulty of bot with this variable
+    int depth=3;
+    Button playAgainButton;
     TextView win;
     String winner;
     String staleMateMessage;
@@ -46,6 +49,7 @@ public class BotActivity extends AppCompatActivity {
 
             if (playerNo == 0) {
                 x.setImageResource(R.drawable.stylishx);
+                win.setText(R.string.botTurn);
                 playerNo = 1;
             }
 
@@ -54,7 +58,9 @@ public class BotActivity extends AppCompatActivity {
             if(checkIfGameWon())
             { showWinner(); }
             else
-                { botTurn(); }
+                { botTurn();
+                  win.setText(R.string.humanTurn);
+                }
         }
     }
 
@@ -68,7 +74,7 @@ public class BotActivity extends AppCompatActivity {
             if (gameState[i]==2)
             {
                 gameState[i]=1;
-                score=miniMax(gameState,2,false);
+                score=miniMax(gameState,depth,false);
                 gameState[i]=2;
                 if(score>bestScore)
                 {
@@ -166,8 +172,7 @@ public class BotActivity extends AppCompatActivity {
     }
 
     public void showWinner()
-    {   win.setVisibility(View.VISIBLE);
-        if(gameTie)
+    {    if(gameTie)
         { win.setText(staleMateMessage); }
         else
             { win.setText(String.format("%s has won ", winner));
@@ -182,20 +187,17 @@ public class BotActivity extends AppCompatActivity {
                     yTextView.setText(Integer.toString(yScore));
                 }
             }
-        play.setVisibility(View.VISIBLE);
+        playAgainButton.setVisibility(View.VISIBLE);
     }
 
     public void playAgain(View view)
-    {
-        Button play= findViewById(R.id.button2);
-        TextView win= findViewById(R.id.textView);
-        play.setVisibility(View.INVISIBLE);
-        win.setVisibility(View.INVISIBLE);
+    {   //reset the game
+        playAgainButton.setVisibility(View.INVISIBLE);
+        win.setText(R.string.humanTurn);
         for(int i=0;i<grid.getChildCount();i++)
         {
             ImageView counter=(ImageView)grid.getChildAt(i);
             counter.setImageDrawable(null);
-
         }
         playerNo=0;
 
@@ -212,12 +214,13 @@ public class BotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        staleMateMessage="StaleMate , it was a draw";
-        play= findViewById(R.id.button2);
+        staleMateMessage="StaleMate , It was a draw";
+        playAgainButton= findViewById(R.id.button2);
         win= findViewById(R.id.textView);
         grid= findViewById(R.id.gridLayout);
         xTextView=findViewById(R.id.textView3);
         yTextView=findViewById(R.id.textView4);
+        win.setText(R.string.humanTurn);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 

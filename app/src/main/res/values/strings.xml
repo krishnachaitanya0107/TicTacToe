@@ -9,4 +9,8 @@
     <string name="back">BACK</string>
     <string name="initial_score">0</string>
     <string name="exit">Exit</string>
+    <string name="oTurn">O\'s Turn</string>
+    <string name="xTurn">X\'s Turn</string>
+    <string name="humanTurn">Your Turn</string>
+    <string name="botTurn">My Turn</string>
 </resources>
