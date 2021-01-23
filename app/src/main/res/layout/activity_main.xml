@@ -167,16 +167,19 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="30dp"
         android:gravity="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         android:textStyle="bold|italic"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/gridLayout" />
 
     <Button
         android:id="@+id/button2"
@@ -185,10 +188,10 @@
         android:layout_marginStart="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginBottom="52dp"
-        android:background="#D3D1D1"
+        android:background="@color/colorPrimaryDark"
         android:onClick="playAgain"
         android:text="@string/play_again"
-        android:textColor="#000000"
+        android:textColor="@color/colorAccent"
         android:textSize="24sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -201,10 +204,10 @@
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginBottom="52dp"
-        android:background="#D3D1D1"
+        android:background="@color/colorPrimaryDark"
         android:onClick="mainMenu"
         android:text="@string/exit"
-        android:textColor="#000000"
+        android:textColor="@color/colorAccent"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

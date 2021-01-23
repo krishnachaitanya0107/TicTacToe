@@ -48,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
             x.animate().translationYBy(1500).rotation(7200).setDuration(700);
             for (int[] winningPosition : winningPositions) {
-                if (gameState[winningPosition[0]] == gameState[winningPosition[1]] && gameState[winningPosition[1]] == gameState[winningPosition[2]] && gameState[winningPosition[0]] != 2) {
-
+                if (gameState[winningPosition[0]] == gameState[winningPosition[1]]
+                        && gameState[winningPosition[1]] == gameState[winningPosition[2]]
+                        && gameState[winningPosition[0]] != 2) {
                     gameWon=true;
                     if (playerNo == 1) {
                         winner = "Player X";
@@ -61,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
                         yTextView.setText(Integer.toString(yScore));
                     }
 
-                    win.setText(String.format("%s has won ", winner));
+
                     play.setVisibility(View.VISIBLE);
                     win.setVisibility(View.VISIBLE);
+                    win.setText(String.format("%s has won ", winner));
 
 
                 } else if (!gameWon){
@@ -76,10 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
                     if(found==0)
                     {
-
-                        win.setText(staleMateMessage);
                         play.setVisibility(View.VISIBLE);
                         win.setVisibility(View.VISIBLE);
+                        win.setText(staleMateMessage);
 
                     }
                 }
