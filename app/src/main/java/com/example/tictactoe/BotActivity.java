@@ -26,14 +26,16 @@ public class BotActivity extends AppCompatActivity {
     int tapPosition;
 
     //depth of minimax algorithm change difficulty of bot with this variable
-    int depth=3;
+    int depth=4;
+    int alpha=-100;
+    int beta=100;
     Button playAgainButton;
-    TextView win;
+    TextView messageTextView;
     String winner;
     String staleMateMessage;
 
-    TextView xTextView;
-    TextView yTextView;
+    TextView xScoreTextView;
+    TextView yScoreTextView;
 
     int xScore=0;
     int yScore=0;
@@ -43,13 +45,15 @@ public class BotActivity extends AppCompatActivity {
         ImageView x=(ImageView) view;
 
         tapPosition=Integer.parseInt(x.getTag().toString());
+
+        //check if position is empty and check whether game is over
         if(gameState[tapPosition]==2&& !gameWon) {
             gameState[tapPosition] = playerNo;
             x.setTranslationY(-1500);
 
             if (playerNo == 0) {
                 x.setImageResource(R.drawable.stylishx);
-                win.setText(R.string.botTurn);
+                messageTextView.setText(R.string.botTurn);
                 playerNo = 1;
             }
 
@@ -58,8 +62,8 @@ public class BotActivity extends AppCompatActivity {
             if(checkIfGameWon())
             { showWinner(); }
             else
-                { botTurn();
-                  win.setText(R.string.humanTurn);
+                {   messageTextView.setText(R.string.humanTurn);
+                    botTurn();
                 }
         }
     }
@@ -72,9 +76,10 @@ public class BotActivity extends AppCompatActivity {
         for(int i=0;i<=8;i++)
         {
             if (gameState[i]==2)
-            {
+            {   //changing gamestate variable temporarily for proper functioning of minimax algorithm
                 gameState[i]=1;
-                score=miniMax(gameState,depth,false);
+                score=miniMax(gameState,depth,alpha,beta,false);
+                // resetting gamestate variable
                 gameState[i]=2;
                 if(score>bestScore)
                 {
@@ -83,11 +88,15 @@ public class BotActivity extends AppCompatActivity {
                 }
             }
         }
+
+        //bot plays its turn
         ImageView imageView=(ImageView) grid.getChildAt(bestMove);
         imageView.setTranslationY(-1500);
         imageView.setImageResource(R.drawable.stylisho);
         imageView.animate().translationYBy(1500).rotation(720).setDuration(700);
+
         gameState[bestMove]=playerNo;
+
         if(checkIfGameWon())
         { showWinner(); }
         playerNo = 0;
@@ -96,20 +105,18 @@ public class BotActivity extends AppCompatActivity {
 
     //scores X:-1, O:1 ,tie :0
 
-    public int miniMax(int[] gameState, int depth, boolean isMaximizingPlayer) {
+    public int miniMax(int[] gameState, int depth,int alpha,int beta, boolean isMaximizingPlayer) {
         boolean gameOver=checkIfGameWon();
         if(depth==0 || gameOver)
         {
             if(winner!=null){
+                gameWon=false;
+                gameTie=false;
                 if(winner.equals("X"))
                 {   winner=null;
-                    gameWon=false;
-                    gameTie=false;
                     return -1;}
                 else if(winner.equals("O"))
                 {   winner=null;
-                    gameWon=false;
-                    gameTie=false;
                     return 1;}
             }
            else {gameTie=false; return 0;}
@@ -122,9 +129,14 @@ public class BotActivity extends AppCompatActivity {
                 if(gameState[i]==2)
                 {
                     gameState[i]=1;
-                    int score=miniMax(gameState,depth-1,false);
+                    int score=miniMax(gameState,depth-1,alpha,beta,false);
                     gameState[i]=2;
                     maxScore=Math.max(score,maxScore);
+                    alpha=Math.max(alpha,score);
+                    if(beta<=alpha)
+                    {
+                        break;
+                    }
                 }
             }
             return maxScore;
@@ -137,13 +149,17 @@ public class BotActivity extends AppCompatActivity {
                     if(gameState[i]==2)
                     {
                         gameState[i]=0;
-                        int score=miniMax(gameState,depth-1,true);
+                        int score=miniMax(gameState,depth-1,alpha,beta,true);
                         gameState[i]=2;
                         minScore=Math.min(score,minScore);
+                        beta=Math.min(beta,score);
+                        if(beta<=alpha)
+                        {
+                            break;
+                        }
                     }
                 }
                 return minScore;
-
             }
     }
 
@@ -173,18 +189,18 @@ public class BotActivity extends AppCompatActivity {
 
     public void showWinner()
     {    if(gameTie)
-        { win.setText(staleMateMessage); }
+        { messageTextView.setText(staleMateMessage); }
         else
-            { win.setText(String.format("%s has won ", winner));
+            { messageTextView.setText(String.format("%s has won ", winner));
                 if(winner.equals("X"))
                 {
                     xScore=xScore+1;
-                    xTextView.setText(Integer.toString(xScore));
+                    xScoreTextView.setText(Integer.toString(xScore));
                 }
                 if(winner.equals("O"))
                 {
                     yScore=yScore+1;
-                    yTextView.setText(Integer.toString(yScore));
+                    yScoreTextView.setText(Integer.toString(yScore));
                 }
             }
         playAgainButton.setVisibility(View.VISIBLE);
@@ -193,7 +209,7 @@ public class BotActivity extends AppCompatActivity {
     public void playAgain(View view)
     {   //reset the game
         playAgainButton.setVisibility(View.INVISIBLE);
-        win.setText(R.string.humanTurn);
+        messageTextView.setText(R.string.humanTurn);
         for(int i=0;i<grid.getChildCount();i++)
         {
             ImageView counter=(ImageView)grid.getChildAt(i);
@@ -216,11 +232,11 @@ public class BotActivity extends AppCompatActivity {
 
         staleMateMessage="StaleMate , It was a draw";
         playAgainButton= findViewById(R.id.button2);
-        win= findViewById(R.id.textView);
+        messageTextView= findViewById(R.id.textView);
         grid= findViewById(R.id.gridLayout);
-        xTextView=findViewById(R.id.textView3);
-        yTextView=findViewById(R.id.textView4);
-        win.setText(R.string.humanTurn);
+        xScoreTextView=findViewById(R.id.textView3);
+        yScoreTextView=findViewById(R.id.textView4);
+        messageTextView.setText(R.string.humanTurn);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
