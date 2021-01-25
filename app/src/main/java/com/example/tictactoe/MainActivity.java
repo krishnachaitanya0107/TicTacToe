@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     Button play;
     TextView win;
     String winner;
-    String staleMateMessage;
 
     TextView xTextView;
     TextView yTextView;
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         found++; }
                 if(found==0)
                 {   play.setVisibility(View.VISIBLE);
-                    win.setText(staleMateMessage);
+                    win.setText(R.string.stalemateMessage);
                 }
             }
         }
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        staleMateMessage="StaleMate , it was a draw";
+
         play= findViewById(R.id.button2);
         win= findViewById(R.id.textView);
         win.setText(R.string.xTurn);

@@ -32,7 +32,6 @@ public class BotActivity extends AppCompatActivity {
     Button playAgainButton;
     TextView messageTextView;
     String winner;
-    String staleMateMessage;
 
     TextView xScoreTextView;
     TextView yScoreTextView;
@@ -189,7 +188,7 @@ public class BotActivity extends AppCompatActivity {
 
     public void showWinner()
     {    if(gameTie)
-        { messageTextView.setText(staleMateMessage); }
+        { messageTextView.setText(R.string.stalemateMessage); }
         else
             { messageTextView.setText(String.format("%s has won ", winner));
                 if(winner.equals("X"))
@@ -229,8 +228,7 @@ public class BotActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        staleMateMessage="StaleMate , It was a draw";
+        
         playAgainButton= findViewById(R.id.button2);
         messageTextView= findViewById(R.id.textView);
         grid= findViewById(R.id.gridLayout);

@@ -3,8 +3,8 @@
     <string name="TODO">TODO</string>
     <string name="play_again">Play Again</string>
     <string name="tic_tac_toe">TIC TAC TOE</string>
-    <string name="playHuman">2 PLAYER MODE</string>
-    <string name="playBot">PLAY WITH BOT</string>
+    <string name="playHuman">MULTI PLAYER</string>
+    <string name="playBot">SINGLE PLAYER</string>
     <string name="inf">INFO</string>
     <string name="back">BACK</string>
     <string name="initial_score">0</string>
@@ -13,4 +13,5 @@
     <string name="xTurn">X\'s Turn</string>
     <string name="humanTurn">Your Turn</string>
     <string name="botTurn">My Turn</string>
+    <string name="stalemateMessage">StaleMate , it was a draw</string>
 </resources>

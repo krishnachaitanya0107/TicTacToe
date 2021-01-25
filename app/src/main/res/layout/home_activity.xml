@@ -8,7 +8,7 @@
     tools:context=".HomeActivity">
 
     <Button
-        android:id="@+id/playHumanButton"
+        android:id="@+id/playBotButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
@@ -16,7 +16,7 @@
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
         android:padding="20dp"
-        android:text="@string/playHuman"
+        android:text="@string/playBot"
         android:textColor="@color/colorAccent"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/playBotButton"
+        android:id="@+id/playHumanButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
@@ -34,7 +34,7 @@
         android:layout_marginRight="60dp"
         android:layout_marginTop="280dp"
         android:padding="20dp"
-        android:text="@string/playBot"
+        android:text="@string/playHuman"
         android:textColor="@color/colorAccent"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
