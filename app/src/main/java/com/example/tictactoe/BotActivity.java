@@ -27,8 +27,6 @@ public class BotActivity extends AppCompatActivity {
 
     //depth of minimax algorithm change difficulty of bot with this variable
     int depth=4;
-    int alpha=-100;
-    int beta=100;
     Button playAgainButton;
     TextView messageTextView;
     String winner;
@@ -59,7 +57,7 @@ public class BotActivity extends AppCompatActivity {
             x.animate().translationYBy(1500).rotation(720).setDuration(700);
 
             if(checkIfGameWon())
-            { showWinner(); }
+            {   showWinner(); }
             else
                 {   messageTextView.setText(R.string.humanTurn);
                     botTurn();
@@ -70,14 +68,14 @@ public class BotActivity extends AppCompatActivity {
     public void botTurn() {
 
         int bestMove=0;
-        int bestScore=-100;
+        int bestScore=-1000;
         int score;
         for(int i=0;i<=8;i++)
         {
             if (gameState[i]==2)
             {   //changing gamestate variable temporarily for proper functioning of minimax algorithm
                 gameState[i]=1;
-                score=miniMax(gameState,depth,alpha,beta,false);
+                score=miniMax(gameState,depth, false);
                 // resetting gamestate variable
                 gameState[i]=2;
                 if(score>bestScore)
@@ -102,60 +100,52 @@ public class BotActivity extends AppCompatActivity {
 
     }
 
-    //scores X:-1, O:1 ,tie :0
+    //scores X:-10, O:10 ,tie :0
 
-    public int miniMax(int[] gameState, int depth,int alpha,int beta, boolean isMaximizingPlayer) {
+    public int miniMax(int[] gameState, int depth, boolean isMaximizingPlayer) {
         boolean gameOver=checkIfGameWon();
         if(depth==0 || gameOver)
         {
             if(winner!=null){
-                gameWon=false;
-                gameTie=false;
                 if(winner.equals("X"))
                 {   winner=null;
-                    return -1;}
+                    gameWon=false;
+                    gameTie=false;
+                    return -10-depth;}
                 else if(winner.equals("O"))
                 {   winner=null;
-                    return 1;}
+                    gameWon=false;
+                    gameTie=false;
+                    return 10+depth;}
             }
            else {gameTie=false; return 0;}
         }
 
         if(isMaximizingPlayer)
-        {   int maxScore=-100;
+        {   int maxScore=-1000;
             for(int i=0;i<=8;i++)
             {
                 if(gameState[i]==2)
                 {
                     gameState[i]=1;
-                    int score=miniMax(gameState,depth-1,alpha,beta,false);
+                    int score=miniMax(gameState,depth-1, false);
                     gameState[i]=2;
                     maxScore=Math.max(score,maxScore);
-                    alpha=Math.max(alpha,score);
-                    if(beta<=alpha)
-                    {
-                        break;
-                    }
                 }
             }
             return maxScore;
         }
         else
             {
-                int minScore=100;
+                int minScore=1000;
                 for(int i=0;i<=8;i++)
                 {
                     if(gameState[i]==2)
                     {
                         gameState[i]=0;
-                        int score=miniMax(gameState,depth-1,alpha,beta,true);
+                        int score=miniMax(gameState,depth-1, true);
                         gameState[i]=2;
                         minScore=Math.min(score,minScore);
-                        beta=Math.min(beta,score);
-                        if(beta<=alpha)
-                        {
-                            break;
-                        }
                     }
                 }
                 return minScore;
@@ -187,9 +177,7 @@ public class BotActivity extends AppCompatActivity {
     }
 
     public void showWinner()
-    {    if(gameTie)
-        { messageTextView.setText(R.string.stalemateMessage); }
-        else
+    {       if(gameWon)
             { messageTextView.setText(String.format("%s has won ", winner));
                 if(winner.equals("X"))
                 {
@@ -201,7 +189,11 @@ public class BotActivity extends AppCompatActivity {
                     yScore=yScore+1;
                     yScoreTextView.setText(Integer.toString(yScore));
                 }
-            }
+            } else
+                {   if(gameTie)
+                    { messageTextView.setText(R.string.stalemateMessage);
+                    }
+                }
         playAgainButton.setVisibility(View.VISIBLE);
     }
 
@@ -228,7 +220,7 @@ public class BotActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         playAgainButton= findViewById(R.id.button2);
         messageTextView= findViewById(R.id.textView);
         grid= findViewById(R.id.gridLayout);
