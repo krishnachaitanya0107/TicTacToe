@@ -11,12 +11,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
 
+import java.util.Random;
+
 public class BotActivity extends AppCompatActivity {
 
 
     int playerNo=0;
     int[][] winningPositions={{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
-    //0 : player x , 1 : player o and 2 : empty
     //0 : human player , 1 : bot player and 2 : empty
     int[] gameState={2,2,2,2,2,2,2,2,2};
 
@@ -42,7 +43,7 @@ public class BotActivity extends AppCompatActivity {
     int xScore=0;
     int yScore=0;
 
-    public void dropIn(View view)
+    public void humanTurn(View view)
     {
         ImageView x=(ImageView) view;
 
@@ -51,14 +52,19 @@ public class BotActivity extends AppCompatActivity {
         //check if position is empty and check whether game is over
         if(gameState[tapPosition]==2&& !gameWon) {
             gameState[tapPosition] = playerNo;
-            x.setTranslationY(-1500);
+
 
             if (playerNo == 0) {
-                x.setImageResource(R.drawable.stylishx);
+                if(botIsO)
+                {
+                    dropIn(x,"X");
+                }
+                else
+                    {
+                        dropIn(x,"O");
+                    }
                 playerNo = 1;
             }
-
-            x.animate().translationYBy(1500).rotation(720).setDuration(700);
 
             if(checkIfGameWon())
             {   showWinner(); }
@@ -92,16 +98,34 @@ public class BotActivity extends AppCompatActivity {
 
         //bot plays its turn
         ImageView imageView=(ImageView) grid.getChildAt(bestMove);
-        imageView.setTranslationY(-1500);
-
-        imageView.setImageResource(R.drawable.stylisho);
-        imageView.animate().translationYBy(1500).rotation(720).setDuration(700);
+        if(botIsO)
+        {
+            dropIn(imageView,"O");
+        }
+        else
+            {
+                dropIn(imageView,"X");
+            }
 
         gameState[bestMove]=playerNo;
 
         if(checkIfGameWon())
         { showWinner(); }
         playerNo = 0;
+
+    }
+
+    public void dropIn(ImageView imageView , String xOrO )
+    {  imageView.setTranslationY(-1500);
+        if(xOrO.equals("X"))
+        {
+            imageView.setImageResource(R.drawable.stylishx);
+        }
+        else
+            {
+                imageView.setImageResource(R.drawable.stylisho);
+            }
+        imageView.animate().translationYBy(1500).rotation(720).setDuration(700);
 
     }
 
@@ -112,16 +136,28 @@ public class BotActivity extends AppCompatActivity {
         if(depth==0 || gameOver)
         {
             if(winner!=null){
-                if(winner.equals("X"))
+                if(winner.equals("X") && botIsO)
                 {   winner=null;
                     gameWon=false;
                     gameTie=false;
                     return -10-depth;}
-                else if(winner.equals("O"))
+                else if(winner.equals("X") && !botIsO)
+                {   winner=null;
+                    gameWon=false;
+                    gameTie=false;
+                    return 10+depth;
+                }
+                else if(winner.equals("O") && botIsO)
                 {   winner=null;
                     gameWon=false;
                     gameTie=false;
                     return 10+depth;}
+                else if(winner.equals("O") && !botIsO)
+                {    winner=null;
+                    gameWon=false;
+                    gameTie=false;
+                    return -10-depth;
+                }
             }
            else {gameTie=false; return 0;}
         }
@@ -175,10 +211,22 @@ public class BotActivity extends AppCompatActivity {
                     && gameState[winningPosition[0]] != 2) {
                 gameWon=true;
                 if (gameState[winningPosition[0]] == 0) {
-                    winner = "X";
-                } else {
+                    if(botIsO)
+                    {
+                        winner = "X";
+                    } else
+                        {
+                            winner = "O";
+                        }
 
-                    winner = "O";
+                } else {
+                    if(botIsO)
+                    {
+                        winner = "O";
+                    } else
+                        {
+                            winner = "X";
+                    }
                 }
             } else if (!gameWon){
                 int found = 0;
@@ -229,25 +277,37 @@ public class BotActivity extends AppCompatActivity {
         gameWon=false;
         gameTie=false;
         winner=null;
+
+        botRandomTurn();
+    }
+    public void botRandomTurn()
+    {
+        if(xPlaysFirst && !botIsO)
+        {
+            Random random=new Random();
+            int randomNum=random.nextInt(9);
+            gameState[randomNum]=1;
+            dropIn((ImageView) grid.getChildAt(randomNum),"X");
+        }
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_play);
 
-        intent=getIntent();
-        botIsO=intent.getBooleanExtra("botIsO",true);
-        xPlaysFirst=intent.getBooleanExtra("xPlaysFirst",true);
-        //if(xPlaysFirst && !botIsO)
-        //{
-          //  botTurn();
-        //}
         playAgainButton= findViewById(R.id.button2);
         messageTextView= findViewById(R.id.textView);
         grid= findViewById(R.id.gridLayout);
         xScoreTextView=findViewById(R.id.textView3);
         yScoreTextView=findViewById(R.id.textView4);
+
+        intent=getIntent();
+        botIsO=intent.getBooleanExtra("botIsO",true);
+        xPlaysFirst=intent.getBooleanExtra("xPlaysFirst",true);
+
+        botRandomTurn();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 

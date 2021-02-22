@@ -32,7 +32,7 @@ public class PlayerActivity extends AppCompatActivity {
     int xScore=0;
     int yScore=0;
     
-    public void dropIn(View view)
+    public void humanTurn(View view)
     {
         ImageView x=(ImageView) view;
 
@@ -110,7 +110,7 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_play);
 
         win= findViewById(R.id.textView);
 

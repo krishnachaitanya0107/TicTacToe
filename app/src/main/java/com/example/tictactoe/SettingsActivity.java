@@ -25,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent=getIntent();
         mode=intent.getStringExtra("userChoice");
         if (mode != null && mode.equals("humanMode")) {
-            s.setEnabled(false);
+            s.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -52,5 +52,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         intent.putExtra("xPlaysFirst",xPlaysFirst);
         startActivity(intent);
+        finish();
     }
 }
