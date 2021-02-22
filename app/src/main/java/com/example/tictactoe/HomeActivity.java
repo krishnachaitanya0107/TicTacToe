@@ -11,16 +11,15 @@ public class HomeActivity extends AppCompatActivity {
 
     public void play(View view)
     {   int gameMode=view.getId();
-
+        Intent intent=new Intent(this, SettingsActivity.class);
         if(gameMode==R.id.playHumanButton)
         {
-            Intent intent=new Intent(this,MainActivity.class);
-            startActivity(intent);
-        }
+            intent.putExtra("userChoice","humanMode");
+         }
         else {
-            Intent intent=new Intent(this,BotActivity.class);
-            startActivity(intent);
-        }
+            intent.putExtra("userChoice","botMode");
+             }
+         startActivity(intent);
 
     }
 

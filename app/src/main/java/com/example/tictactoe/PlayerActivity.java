@@ -1,5 +1,6 @@
 package com.example.tictactoe;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -10,9 +11,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity {
 
-    int playerNo=0;
+    int playerNo;
     int[][] winningPositions={{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
     //0 : player x , 1 : player o and 2 : empty
     int[] gameState={2,2,2,2,2,2,2,2,2};
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     Button play;
     TextView win;
     String winner;
+
+    Intent intent;
+    boolean xPlaysFirst;
 
     TextView xTextView;
     TextView yTextView;
@@ -108,10 +112,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        win= findViewById(R.id.textView);
+
+        intent=getIntent();
+        xPlaysFirst=intent.getBooleanExtra("xPlaysFirst",true);
+        if(xPlaysFirst)
+            { playerNo=0;
+                win.setText(R.string.xTurn);}
+        else
+            { playerNo=1;
+                win.setText(R.string.oTurn);}
 
         play= findViewById(R.id.button2);
-        win= findViewById(R.id.textView);
-        win.setText(R.string.xTurn);
         xTextView=findViewById(R.id.textView3);
         yTextView=findViewById(R.id.textView4);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
