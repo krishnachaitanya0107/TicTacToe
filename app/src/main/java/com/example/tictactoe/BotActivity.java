@@ -289,7 +289,6 @@ public class BotActivity extends AppCompatActivity {
             gameState[randomNum]=1;
             dropIn((ImageView) grid.getChildAt(randomNum),"X");
         }
-
     }
 
     @Override
