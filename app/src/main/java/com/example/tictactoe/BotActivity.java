@@ -37,8 +37,7 @@ public class BotActivity extends AppCompatActivity {
     boolean botIsO;
     boolean xPlaysFirst;
 
-    TextView xScoreTextView;
-    TextView yScoreTextView;
+    TextView xScoreTextView,yScoreTextView,playerXnameTextView,playerOnameTextView;
 
     int xScore=0;
     int yScore=0;
@@ -264,6 +263,7 @@ public class BotActivity extends AppCompatActivity {
     public void playAgain(View view)
     {   //reset the game
         playAgainButton.setVisibility(View.INVISIBLE);
+        messageTextView.setText("");
         for(int i=0;i<grid.getChildCount();i++)
         {
             ImageView counter=(ImageView)grid.getChildAt(i);
@@ -288,6 +288,11 @@ public class BotActivity extends AppCompatActivity {
             int randomNum=random.nextInt(9);
             gameState[randomNum]=1;
             dropIn((ImageView) grid.getChildAt(randomNum),"X");
+        } else if(!xPlaysFirst && botIsO)
+        {   Random random=new Random();
+            int randomNum=random.nextInt(9);
+            gameState[randomNum]=1;
+            dropIn((ImageView) grid.getChildAt(randomNum),"O");
         }
     }
 
@@ -296,14 +301,26 @@ public class BotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        playAgainButton= findViewById(R.id.button2);
-        messageTextView= findViewById(R.id.textView);
+        playAgainButton= findViewById(R.id.playAgainButton);
+        messageTextView= findViewById(R.id.gameStatusTextView);
         grid= findViewById(R.id.gridLayout);
-        xScoreTextView=findViewById(R.id.textView3);
-        yScoreTextView=findViewById(R.id.textView4);
+        xScoreTextView=findViewById(R.id.xScoreTextView);
+        playerXnameTextView=findViewById(R.id.player1NameTextView);
+        playerOnameTextView=findViewById(R.id.player2NameTextView);
+        yScoreTextView=findViewById(R.id.oScoreTextView);
+
 
         intent=getIntent();
         botIsO=intent.getBooleanExtra("botIsO",true);
+        if(botIsO)
+        {
+            playerXnameTextView.setText("Human");
+            playerOnameTextView.setText("Computer");
+        } else
+            {
+                playerOnameTextView.setText("Human   ");
+                playerXnameTextView.setText("Computer");
+            }
         xPlaysFirst=intent.getBooleanExtra("xPlaysFirst",true);
 
         botRandomTurn();

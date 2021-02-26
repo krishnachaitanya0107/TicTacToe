@@ -3,6 +3,7 @@ package com.example.tictactoe;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -27,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (mode != null && mode.equals("humanMode")) {
             s.setVisibility(View.INVISIBLE);
         }
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public void playNow(View view) {

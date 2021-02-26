@@ -16,4 +16,6 @@
     <string name="x_plays_first">X Plays First :</string>
     <string name="match_settings">Match Settings</string>
     <string name="play_now">Play Now</string>
+    <string name="player_o">Player O</string>
+    <string name="player_x">Player X</string>
 </resources>

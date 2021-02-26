@@ -22,6 +22,7 @@ public class PlayerActivity extends AppCompatActivity {
     Button play;
     TextView win;
     String winner;
+    GridLayout grid;
 
     Intent intent;
     boolean xPlaysFirst;
@@ -67,10 +68,20 @@ public class PlayerActivity extends AppCompatActivity {
                     winner = "Player X";
                     xScore=xScore+1;
                     xTextView.setText(Integer.toString(xScore));
+                    //for (int i=0;i<=2;i++)
+                    //{
+                    //    ImageView imageView=(ImageView)grid.getChildAt(winningPosition[i]);
+                    //    imageView.setImageResource(R.drawable.winningx);
+                    //}
                 } else {
                     yScore=yScore+1;
                     winner = "Player O";
                     yTextView.setText(Integer.toString(yScore));
+                    //for (int i=0;i<=2;i++)
+                    //{
+                    //    ImageView imageView=(ImageView)grid.getChildAt(winningPosition[i]);
+                    //    imageView.setImageResource(R.drawable.winningo);
+                    //}
                 }
 
                 play.setVisibility(View.VISIBLE);
@@ -92,15 +103,18 @@ public class PlayerActivity extends AppCompatActivity {
     public void playAgain(View view)
         {   //reset all variables
             play.setVisibility(View.INVISIBLE);
-            win.setText(R.string.xTurn);
-            GridLayout grid= findViewById(R.id.gridLayout);
             for(int i=0;i<grid.getChildCount();i++)
             {
                 ImageView counter=(ImageView)grid.getChildAt(i);
                 counter.setImageDrawable(null);
 
             }
-            playerNo=0;
+            if(xPlaysFirst)
+            { playerNo=0;
+                win.setText(R.string.xTurn);}
+            else
+            { playerNo=1;
+                win.setText(R.string.oTurn);}
 
             //0 :player x , 1 : player o and 2 : empty
             for (int d=0;d<=8;d++){gameState[d]=2;}
@@ -112,7 +126,7 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        win= findViewById(R.id.textView);
+        win= findViewById(R.id.gameStatusTextView);
 
         intent=getIntent();
         xPlaysFirst=intent.getBooleanExtra("xPlaysFirst",true);
@@ -123,9 +137,10 @@ public class PlayerActivity extends AppCompatActivity {
             { playerNo=1;
                 win.setText(R.string.oTurn);}
 
-        play= findViewById(R.id.button2);
-        xTextView=findViewById(R.id.textView3);
-        yTextView=findViewById(R.id.textView4);
+        play= findViewById(R.id.playAgainButton);
+        grid= findViewById(R.id.gridLayout);
+        xTextView=findViewById(R.id.xScoreTextView);
+        yTextView=findViewById(R.id.oScoreTextView);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
